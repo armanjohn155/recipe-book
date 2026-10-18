@@ -27,7 +27,7 @@ export default function AdminPage() {
         </div>
       </PageHeader>
 
-      {error && <p role="alert" className="mb-6 text-rose-700">{error}</p>}
+      {error && <p role="alert" className="mb-6 text-error">{error}</p>}
 
       <AdminRecipes />
     </Section>

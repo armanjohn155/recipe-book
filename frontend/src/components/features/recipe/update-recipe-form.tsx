@@ -77,7 +77,7 @@ export default function UpdateRecipeForm({ recipe, onSuccess }: UpdateRecipeForm
         <Textarea id="update-recipe-instructions" value={instructions} onChange={(e) => setInstructions(e.target.value)} rows={5} />
       </div>
 
-      {error && <p role="alert" className="text-sm text-red-600 sm:col-span-2">{error}</p>}
+      {error && <p role="alert" className="text-sm text-error sm:col-span-2">{error}</p>}
       <Button type="submit" className="w-full sm:col-span-2">
         Save Changes
       </Button>

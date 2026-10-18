@@ -1,9 +1,10 @@
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 import { useState, type SubmitEvent } from "react";
+import { ArrowRight } from "lucide-react";
 import { useAuth } from "@/components/context/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { AuthField, PasswordField, authButtonClassName, authInputClassName } from "@/components/features/auth/auth-field";
 
 function getErrorMessage(error: unknown) {
   if (typeof error === "object" && error !== null && "response" in error) {
@@ -40,22 +41,38 @@ export function SignupForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-8 grid gap-5">
-      <div>
-        <Label htmlFor="auth-name">Name</Label>
-        <Input id="auth-name" autoComplete="name" required minLength={2} value={name} onChange={(event) => setName(event.target.value)} />
-      </div>
-      <div>
-        <Label htmlFor="auth-email">Email</Label>
-        <Input id="auth-email" type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} />
-      </div>
-      <div>
-        <Label htmlFor="auth-password">Password</Label>
-        <Input id="auth-password" type="password" autoComplete={"new-password"} required minLength={8} value={password} onChange={(event) => setPassword(event.target.value)} />
-      </div>
-      <p className="-mt-2 text-xs text-gray-500">Use at least 8 characters, including one uppercase letter and one number.</p>
-      {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
-      <Button type="submit" disabled={busy} className="mt-1 bg-emerald-900 py-3 font-medium hover:bg-emerald-950 disabled:cursor-wait disabled:opacity-60">{busy ? "Please wait…" : "Create account"}</Button>
+    <form onSubmit={handleSubmit} className="grid gap-4">
+      <AuthField id="auth-name" label="Name">
+        <Input id="auth-name" autoComplete="name" required minLength={2} value={name} onChange={(event) => setName(event.target.value)} className={authInputClassName} />
+      </AuthField>
+      <AuthField id="auth-email" label="Email">
+        <Input id="auth-email" type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} className={authInputClassName} />
+      </AuthField>
+      <PasswordField
+        id="auth-password"
+        label="Password"
+        hint="Use at least 8 characters, including one uppercase letter and one number."
+        autoComplete={"new-password"}
+        required
+        minLength={8}
+        value={password}
+        onChange={(event) => setPassword(event.target.value)}
+      />
+
+      {error && <p role="alert" className="text-sm text-error">{error}</p>}
+
+      <p className="text-sm text-text-muted">
+        Already have an account?{" "}
+        <Link className="font-medium text-accent underline-offset-4 hover:underline" to={"/auth/login"}>
+          Sign in
+        </Link>{" "}
+        instead.
+      </p>
+
+      <Button type="submit" disabled={busy} className={authButtonClassName}>
+        {busy ? "Please wait…" : "Sign up"}
+        {!busy && <ArrowRight className="h-4 w-4" />}
+      </Button>
     </form>
   );
 }

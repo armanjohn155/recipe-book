@@ -6,6 +6,7 @@ import SignupPage from "@/pages/auth/signup";
 import UserHomePage from "@/pages/user/home";
 import RecipePage from "@/pages/user/recipe";
 import AdminPage from "@/pages/admin/home";
+import NotFoundPage from "@/pages/not-found";
 
 export default function App() {
   return (
@@ -24,6 +25,8 @@ export default function App() {
           <Route element={<ProtectedRoute role="ADMIN" />}>
             <Route path="/admin" element={<AdminPage />} />
           </Route>
+
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

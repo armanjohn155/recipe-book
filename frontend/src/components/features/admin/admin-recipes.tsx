@@ -39,7 +39,7 @@ export function AdminRecipes() {
 
   return (
     <>
-      {error && <p role="alert" className="mb-4 text-sm text-red-600">{error}</p>}
+      {error && <p role="alert" className="mb-4 text-sm text-error">{error}</p>}
       <AdminRecipesTable recipes={recipes} loading={loading} />
     </>
   );

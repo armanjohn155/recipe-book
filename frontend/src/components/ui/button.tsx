@@ -7,14 +7,15 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const variants = {
-  primary: "bg-emerald-900 text-amber-50 hover:bg-emerald-950",
-  secondary: "border border-emerald-900/20 bg-emerald-50 text-emerald-900 hover:bg-emerald-100",
-  tertiary: "text-emerald-800 hover:text-emerald-950",
+  primary:
+    "bg-white text-ink shadow-[0_10px_24px_rgba(0,0,0,0.25)] hover:-translate-y-0.5 hover:bg-white/90",
+  secondary: "glass glass-hover text-white",
+  tertiary: "text-white/80 hover:text-white",
 };
 
 export function Button({ variant = "primary", className, children, type = "button", ...props }: ButtonProps) {
   return (
-    <button type={type} className={cn("cursor-pointer rounded-xl px-4 py-2.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 disabled:cursor-not-allowed disabled:opacity-60", variants[variant], className)} {...props}>
+    <button type={type} className={cn("cursor-pointer rounded-xl px-4 py-2.5 text-sm font-semibold transition duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-60", variants[variant], className)} {...props}>
       {children}
     </button>
   );

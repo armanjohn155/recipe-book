@@ -30,9 +30,23 @@ export async function logoutService() {
 }
 
 // Refresh Token Service
+// Refresh tokens are single-use (rotation), so concurrent session restores
+// must share one request. React StrictMode runs the provider effect twice in
+// development; without this guard the second refresh consumes an already
+// rotated token and the visitor is treated as signed out.
+let restoreSessionInFlight: Promise<User> | null = null;
+
 export async function restoreSessionService() {
-  await ensureCsrfToken();
-  await http.post("/auth/v1/refresh-token", {});
-  await ensureCsrfToken();
-  return getSessionService();
+  if (restoreSessionInFlight) return restoreSessionInFlight;
+
+  restoreSessionInFlight = (async () => {
+    await ensureCsrfToken();
+    await http.post("/auth/v1/refresh-token", {});
+    await ensureCsrfToken();
+    return getSessionService();
+  })().finally(() => {
+    restoreSessionInFlight = null;
+  });
+
+  return restoreSessionInFlight;
 }

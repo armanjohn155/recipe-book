@@ -1,9 +1,10 @@
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 import { useState, type SubmitEvent } from "react";
+import { ArrowRight } from "lucide-react";
 import { useAuth } from "@/components/context/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { AuthField, PasswordField, authButtonClassName, authInputClassName } from "@/components/features/auth/auth-field";
 
 function getErrorMessage(error: unknown) {
   if (typeof error === "object" && error !== null && "response" in error) {
@@ -40,18 +41,36 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-8 grid gap-5">
-      <div>
-        <Label htmlFor="auth-email">Email</Label>
-        <Input id="auth-email" type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} />
-      </div>
-      <div>
-        <Label htmlFor="auth-password">Password</Label>
-        <Input id="auth-password" type="password" autoComplete={"current-password"} required minLength={1} value={password} onChange={(event) => setPassword(event.target.value)} />
+    <form onSubmit={handleSubmit} className="grid gap-4">
+      <AuthField id="auth-email" label="Email">
+        <Input id="auth-email" type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} className={authInputClassName} />
+      </AuthField>
+      <PasswordField id="auth-password" label="Password" autoComplete={"current-password"} required minLength={1} value={password} onChange={(event) => setPassword(event.target.value)} />
+
+      <div className="flex items-center justify-between">
+        <label className="flex items-center gap-2 text-sm text-white">
+          <input type="checkbox" className="h-4 w-4 cursor-pointer rounded border-white/30 accent-accent" />
+          Keep me signed in
+        </label>
+        <button type="button" className="cursor-pointer text-sm text-accent hover:underline">
+          Forgot password?
+        </button>
       </div>
 
-      {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
-      <Button type="submit" disabled={busy} className="mt-1 bg-emerald-900 py-3 font-medium hover:bg-emerald-950 disabled:cursor-wait disabled:opacity-60">{busy ? "Please wait…" : "Sign in"}</Button>
+      {error && <p role="alert" className="text-sm text-error">{error}</p>}
+
+      <p className="text-sm text-text-muted">
+        First time here?{" "}
+        <Link className="font-medium text-accent underline-offset-4 hover:underline" to={"/auth/signup"}>
+          Sign up
+        </Link>{" "}
+        instead.
+      </p>
+
+      <Button type="submit" disabled={busy} className={authButtonClassName}>
+        {busy ? "Please wait…" : "Sign in"}
+        {!busy && <ArrowRight className="h-4 w-4" />}
+      </Button>
     </form>
   );
 }

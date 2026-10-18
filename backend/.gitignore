@@ -22,4 +22,6 @@
 # .vscode/
 # .idea/
 # .DS_Store
-# Thumbs.db
+# Thumbs.dbnode_modules
+dist
+.env
